@@ -1,11 +1,11 @@
-= konraifen88-home-uaa
-
-Dockerfile to create an Docker image for the konraifen88-home project. The Docker image will contain an working link:https://github.com/cloudfoundry/uaa[UAA] instance which will be connected to an PostgreSQL db.
+= unsecure-uaa
 
 [WARNING]
 ====
 This docker image must NOT be used for productional environments. All the secrets are hardcoded and therefore it is not save to use it as is.
 ====
+
+Dockerfile to create an Docker image for the konraifen88-home project. The Docker image will contain an working link:https://github.com/cloudfoundry/uaa[UAA] instance which will be connected to an PostgreSQL db.
 
 == Build
 
