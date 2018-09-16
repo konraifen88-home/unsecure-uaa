@@ -1,0 +1,53 @@
+= konraifen88-home-uaa
+
+Dockerfile to create an Docker image for the konraifen88-home project. The Docker image will contain an working link:https://github.com/cloudfoundry/uaa[UAA] instance which will be connected to an PostgreSQL db.
+
+[WARNING]
+====
+This docker image must NOT be used for productional environments. All the secrets are hardcoded and therefore it is not save to use it as is.
+====
+
+== Build
+
+To build this image simply call from its root directory:
+
+```bash
+docker build -t konraifen88-home/unsecure-uaa .
+```
+
+== Run
+
+To run it you first make sure you also have an running PostgreSQL instance.
+
+=== PostgreSQL in Docker
+
+The easiest way to start the UAA is to also provide an PostgreSQL as another running Docker image. To do so simply call:
+
+```bash
+docker run -d --name {{DATABASE_NAME}} [-p 5432:5432] postgres
+docker run -d --name uaa --link {{DATABASE_NAME}}:db -p 8080:8080 konraifen88-home/unsecure-uaa:latest
+```
+
+This will link the database instance to the uaa instance and use the provided Postgres instance.
+
+=== External PostgreSQL
+
+It is also possible to use an externally running instance of PostgreSQL. Simply run:
+
+```bash
+docker run -d --name uaa \
+    -e "DB_PORT_5432_TCP_ADDR={{ADDRESS_TO_DB}}" \
+    -e "DB_PORT_5432_TCP_PORT={{PORT_OF_DB}}" \
+    -e "DB_ENV_DB={{DB_NAME}}" \
+    -e "DB_ENV_USER={{USERNAME}}" \
+    -e "DB_ENV_PASS={{PASSWORD}}" \
+    -p 8080:8080 konraifen88-home/unsecure-uaa:latest
+```
+
+== Configuration
+
+To change the configuration you can set the following environment variables when starting the docker image:
+
+* UAA_CONFIG_URL: This will overwrite the default config for the users and the DB configuration. To see all possible configurations see link:https://github.com/cloudfoundry/uaa/blob/4.20.0/uaa/src/main/resources/uaa.yml[The offical uaa.yml reference file]
+
+* LOGIN_CONFIG_URL: This is set to the uaa-additional.yml file by default.
