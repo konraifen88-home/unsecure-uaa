@@ -8,9 +8,6 @@ database:
 oauth:
   client:
     override: true
-    autoapprove:
-      - cloudbreak_shell
-      - periscope-client
   clients:
     user-admin:
       id: user-admin
@@ -18,7 +15,7 @@ oauth:
       authorized-grant-types: client_credentials
       scope: uaa.none
       authorities: uaa.admin,clients.read,clients.write,clients.secret,scim.read,scim.write,clients.admin
-      authorities: cloudbreak.autoscale,uaa.resource,scim.read
+      authorities: uaa.resource,scim.read
 
 scim:
   username_pattern: '[a-z0-9+\-_.@]+'
